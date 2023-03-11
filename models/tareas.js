@@ -49,9 +49,35 @@ class Tareas {
             console.log(`${idx} ${desc} :: ${estado}`)
 
         })
+    }
 
+    isCompleted(completadas = true){
 
+        console.log();
+        const listar = this.listadoArr;
+        let idx = 0
 
+        listar.forEach( tarea => {
+
+            const {desc, completadoEn} = tarea;
+
+            const estado = (completadoEn)
+                ? 'Completada'.green
+                : 'Pendiente'.red;
+
+            if (completadas) {
+                if (completadoEn) {
+                    idx +=1;
+                    console.log(`${(idx+'.').toString().green} ${desc} :: ${completadoEn}`);
+                }
+            }
+            else{
+                if (!completadoEn) {
+                    idx +=1;
+                    console.log(`${(idx+'.').toString().red} ${desc} :: ${estado}`);
+                }
+            }
+        })
     }
 
 }
