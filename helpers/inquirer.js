@@ -44,9 +44,7 @@ const inquirerMenu = async() => {
     console.log('========================='.green);
     console.log('  Selecciona una Opcion'.white);
     console.log('=========================\n'.green);
-
     const { opcion } = await inquirer.prompt(menuOpts);
-
     return opcion;
 }
 
@@ -86,13 +84,11 @@ const leerInput = async( message ) => {
 const listadoTareasBorrar = async (tareas=[]) => {
 
     const choices = tareas.map((tarea, i) => {
-
         const idx = `${i + 1}.`.green;
         return {
             value: tarea.id,
             name: `${idx} ${tarea.desc}`
         }
-
     });
 
     choices.unshift({
@@ -125,10 +121,35 @@ const confirmar = async(message) => {
     return ok;
 }
 
+const mostrarListadoCheckList = async (tareas=[]) => {
+
+    const choices = tareas.map((tarea, i) => {
+        const idx = `${i + 1}.`.green;
+        return {
+            value: tarea.id,
+            name: `${idx} ${tarea.desc}`,
+            checked: (tarea.completadoEn) ? true : false,
+        }
+    });
+
+    const pregunta = [
+        {
+            type: 'checkbox',
+            name: 'ids',
+            message: 'Seleccione',
+            choices
+        },
+    ]
+
+    const {ids} = await inquirer.prompt(pregunta);
+    return ids;
+}
+
 module.exports = {
     inquirerMenu, 
     pausa,
     leerInput,
     listadoTareasBorrar,
-    confirmar
+    confirmar,
+    mostrarListadoCheckList
 }
