@@ -1,42 +1,46 @@
+// Imports 
 require('colors');
 
+const { guardarDB, leerDB } = require('./helpers/saveFile');
 const { 
     inquirerMenu, 
     pausa, 
     leerInput } = require('./helpers/inquirer');
-const { guardarDB } = require('./helpers/saveFile');
+const Tareas = require('./models/tareas');
 
-    const Tareas = require('./models/tareas');
-
-
+// Function Main App
 const main = async() => {
 
     let opt = '';
     const tareas = new Tareas();
+    const tareasDB = leerDB();
+
+    if (tareasDB) {
+        tareas.cargarTareasFromArray(tareasDB);
+    }
 
     do {
-        //Imprime el Menu
+        //Print the Menu
         opt = await inquirerMenu();
         
         switch (opt) {
             case '1':
-                //crear opcion
+                //Create Task
                 const desc = await leerInput('Descripción:');
                 tareas.crearTarea(desc);
             break;
 
             case '2':
-                console.log(tareas.listadoArr);
+                tareas.listadoCompleto();
             break;   
         }
 
-        // guardarDB(tareas.listadoArr);
+        guardarDB(tareas.listadoArr);
 
         await pausa();
 
     } while (opt !== '0');
-    
-    //pausa();
+
 }
 
 main();
